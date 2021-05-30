@@ -1,16 +1,24 @@
-version: '3.8'
+version: '3.9'
 
 services:
   doc:
     image: jekyll/jekyll
-    # environment:
-    #   - JEKYLL_ENV=development
+    environment:
+      - JEKYLL_ENV=virtual
     command: jekyll serve --watch --force_polling --verbose --livereload
     volumes:
       - ./docs:/srv/jekyll
     ports:
       - '127.0.0.1:4000:4000'
       - '127.0.0.1:35729:35729'
+  dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./dev:/root/dev
   portainer:
     image: portainer/portainer-ce
     command: -H unix:///var/run/docker.sock
@@ -20,6 +28,6 @@ services:
       - 8000:8000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - portainer_data3:/data
 volumes:
-  portainer_data:
+  portainer_data3:
